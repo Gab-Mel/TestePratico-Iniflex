@@ -30,71 +30,105 @@ public class main {
         employees.add(new Employee("Helena", LocalDate.of(1996, 9, 2), new BigDecimal("2799.93"), "Gerente"));
 
         // 3.2 Remover João
-        employees.removeIf(f -> f.getname().equals("João"));
+        employees.removeIf(e -> "João".equals(e.getName()));
 
         // 3.3 Imprimir
-        System.out.println("FUNCIONÁRIOS:");
-        employees.forEach(f -> System.out.println(
-                f.getname() + " | " +
-                Formatter.date(f.getbirthDay()) + " | " +
-                Formatter.valor(f.getsalary()) + " | " +
-                f.getfunction()
+        System.out.println("\n========= FUNCIONÁRIOS =========");
+        System.out.printf("%-12s %-12s %-15s %-15s%n", "Nome", "Nascimento", "Salário", "Função");
+
+        employees.forEach(e -> System.out.printf("%-12s %-12s %-15s %-15s%n",
+                e.getName(),
+                Formatter.formatDate(e.getBirthDate()),
+                Formatter.formatCurrency(e.getSalary()),
+                e.getFunction()
         ));
+
 
         // 3.4 Aumento
         employees.forEach(f ->
-                f.setsalary(f.getsalary().multiply(new BigDecimal("1.10")))
+                f.setSalary(f.getSalary().multiply(new BigDecimal("1.10")))
         );
 
+        System.out.println("\n========= FUNCIONÁRIOS COM AUMENTO =========");
+        System.out.printf("%-12s %-12s %-15s %-15s%n", "Nome", "Nascimento", "Salário", "Função");
+        employees.forEach(e -> System.out.printf("%-12s %-12s %-15s %-15s%n",
+                e.getName(),
+                Formatter.formatDate(e.getBirthDate()),
+                Formatter.formatCurrency(e.getSalary()),
+                e.getFunction()
+        ));
+
         // 3.5 Agrupamento
-        Map<String, List<Employee>> map =
-                employees.stream().collect(Collectors.groupingBy(Employee::getfunction));
+        Map<String, List<Employee>> grouped =
+                employees.stream().collect(Collectors.groupingBy(Employee::getFunction));
 
         // 3.6 Impressão agrupada
-        System.out.println("\nAGRUPADOS:");
-        map.forEach((k, v) -> {
-            System.out.println(k + ":");
-            v.forEach(f -> System.out.println(" - " + f.getname()));
+        System.out.println("\n========= AGRUPADOS POR FUNÇÃO =========");
+
+        grouped.forEach((role, list) -> {
+        System.out.println("\nFunção: " + role);
+        System.out.printf("%-12s %-12s %-15s%n", "Nome", "Nascimento", "Salário");
+
+        list.forEach(e -> System.out.printf("%-12s %-12s %-15s%n",
+                e.getName(),
+                Formatter.formatDate(e.getBirthDate()),
+                Formatter.formatCurrency(e.getSalary())
+        ));
         });
 
         // 3.8 Aniversários
-        System.out.println("\nANIVERSARIANTES:");
+        System.out.println("\n========= ANIVERSARIANTES (OUT/DEZ) =========");
+        System.out.printf("%-12s %-12s%n", "Nome", "Nascimento");
+
         employees.stream()
-                .filter(f -> {
-                    int mes = f.getbirthDay().getMonthValue();
-                    return mes == 10 || mes == 12;
+                .filter(e -> {
+                int month = e.getBirthDate().getMonthValue();
+                return month == 10 || month == 12;
                 })
-                .forEach(f -> System.out.println(f.getname()));
+                .forEach(e -> System.out.printf("%-12s %-12s%n",
+                        e.getName(),
+                        Formatter.formatDate(e.getBirthDate())
+                ));
 
         // 3.9 Mais velho
         Employee maisVelho = Collections.min(employees,
-                Comparator.comparing(Employee::getbirthDay));
+                Comparator.comparing(Employee::getBirthDate));
 
-        int idade = Period.between(maisVelho.getbirthDay(), LocalDate.now()).getYears();
+        int idade = Period.between(maisVelho.getBirthDate(), LocalDate.now()).getYears();
 
-        System.out.println("\nMAIS VELHO:");
-        System.out.println(maisVelho.getname() + " - " + idade + " anos");
+        System.out.println("\n========= FUNCIONÁRIO MAIS VELHO =========");
+        System.out.printf("%-12s %-10s%n", "Nome", "Idade");
+        System.out.printf("%-12s %-10d%n", maisVelho.getName(), idade);
 
         // 3.10 Ordem alfabética
-        System.out.println("\nORDEM ALFABÉTICA:");
+        System.out.println("\n========= ORDEM ALFABÉTICA =========");
+        System.out.printf("%-12s%n", "Nome");
+
         employees.stream()
-                .sorted(Comparator.comparing(Employee::getname))
-                .forEach(f -> System.out.println(f.getname()));
+                .sorted(Comparator.comparing(Employee::getName))
+                .forEach(e -> System.out.printf("%-12s%n", e.getName()));
 
         // 3.11 Total salários
         BigDecimal total = employees.stream()
-                .map(Employee::getsalary)
+                .map(Employee::getSalary)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-        System.out.println("\nTOTAL: " + Formatter.valor(total));
+        System.out.println("\n========= TOTAL DOS SALÁRIOS =========");
+        System.out.printf("%-20s %-15s%n", "Total", Formatter.formatCurrency(total));
 
         // 3.12 Salários mínimos
         BigDecimal minimo = new BigDecimal("1212.00");
 
-        System.out.println("\nSALÁRIOS MÍNIMOS:");
-        employees.forEach(f -> {
-            BigDecimal qtd = f.getsalary().divide(minimo, 2, RoundingMode.HALF_UP);
-            System.out.println(f.getname() + ": " + qtd);
+        System.out.println("\n========= SALÁRIOS MÍNIMOS =========");
+        System.out.printf("%-12s %-15s%n", "Nome", "Qtd. Salários");
+
+        employees.forEach(e -> {
+        BigDecimal qtd = e.getSalary().divide(minimo, 2, RoundingMode.HALF_UP);
+
+        System.out.printf("%-12s %-15s%n",
+                e.getName(),
+                qtd
+        );
         });
     }
 }

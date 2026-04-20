@@ -14,15 +14,15 @@ public class Employee extends Person {
         this.function = function;
     }
 
-    public BigDecimal getsalary() {
+    public BigDecimal getSalary() {
         return salary;
     }
 
-    public void setsalary(BigDecimal salary) {
+    public void setSalary(BigDecimal salary) {
         this.salary = salary;
     }
 
-    public String getfunction() {
+    public String getFunction() {
         return function;
     }
 }

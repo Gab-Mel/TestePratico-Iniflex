@@ -1,11 +1,21 @@
 # TestePratico-Iniflex
 Este repositório é destinado a resolver o teste pratico do processo seletivo para Desenvolvedor de Software Júnior - Área: Contábil/Fiscal
 
+# Index:
+* [Descrição](#descrição)
+* [Solução](#solução)
+    - [Estrutura do projeto](#estrutura-do-projeto)
+    - [Tecnologias](#tecnologias)
+    - [Execução](#execução)
+    - [Decisões de Projeto](#decisões-do-projeto)
+
 # Descrição:
 
 ## TESTE PRÁTICO PROGRAMAÇÃO. 
 
 Considerando que uma indústria possui as pessoas/funcionários abaixo:
+
+<img src="img/image.png">
 
 Diante disso, você deve desenvolver um projeto java, com os seguintes requisitos: 
 1. Classe Pessoa com os atributos: nome (String) e data nascimento (LocalDate).
@@ -32,17 +42,72 @@ Diante disso, você deve desenvolver um projeto java, com os seguintes requisito
 
 # Solução:
 
+A aplicação foi desenvolvida utilizando Java puro com Maven, seguindo uma abordagem simples e direta, conforme o escopo proposto.
+
+Todas as operações são realizadas em memória, sem uso de banco de dados, conforme recomendado no enunciado.
+
+## Estrutura do Projeto
+```
+src/main/java/br/com/gabriel/empresa 
+│ 
+├── model 
+│   ├── Person.java 
+│   └── Employee.java 
+│ 
+├── util 
+│   └── Formatter.java 
+│ 
+└── Main.java
+```
+
 ## Tecnologias
 - Java 17
 - Maven
-
-## Decisões
-- Utilizado armazenamento em memória conforme escopo do problema
-- Uso de BigDecimal para valores monetários
-- Uso de LocalDate para datas
-- Separação em camadas (model, util)
+- API padão do java:
+    - `java.time`(datas)
+    - `BigDecimal`(valores monetários)
+    - `Streams` (manipulações de coleções)
 
 ## Execução
+### Compilar o projeto:
+``` 
+mvn clean compile
+```
 
-mvn compile  
+### Executar
+```
 mvn exec:java -D"exec.mainClass"="br.com.gabriel.empresa.main"
+```
+
+## Decisões do Projeto
+- Uso de BigDecimal para evitar erros de precisão em valores monetários
+- Uso de LocalDate para manipulação segura de datas
+- Separação em camadas simples (model e util)
+- Uso de Streams para operações como:
+    - agrupamento
+    - ordenação
+    - filtragem
+- Saída formatada com printf, simulando um relatório estruturado
+
+## Funcionalidades Implementadas
+- Inserção dos funcionários
+- Remoção do funcionário "João"
+- Impressão formatada (datas e valores)
+- Aplicação de aumento de 10%
+- Agrupamento por função
+- Listagem de aniversariantes (Outubro e Dezembro)
+- Identificação do funcionário mais velho
+- Ordenação alfabética
+- Soma total dos salários
+- Cálculo de salários mínimos por funcionário
+
+
+## Observações
+
+O projeto foi mantido propositalmente simples, priorizando:
+
+- clareza
+- legibilidade
+- aderência ao escopo
+
+Sem uso de frameworks adicionais ou banco de dados.

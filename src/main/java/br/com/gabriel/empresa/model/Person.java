@@ -12,11 +12,11 @@ public class Person {
         this.birthDay = birthDay;
     }
 
-    public String getname() {
+    public String getName() {
         return name;
     }
 
-    public LocalDate getbirthDay() {
+    public LocalDate getBirthDate() {
         return birthDay;
     }
 }
